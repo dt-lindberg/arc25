@@ -197,7 +197,7 @@ def main():
     task_ids = evaluation_data.task_ids
     if args.num_tasks and args.num_tasks < len(task_ids):
         task_ids = task_ids[:args.num_tasks]
-        
+    
     print(f"Evaluating {len(task_ids)} tasks...")
     
     # Step 3: Set up results storage
@@ -218,23 +218,33 @@ def main():
     # Step 4: Evaluate tasks
     total_start_time = time.time()
     for task_id in tqdm(task_ids, desc="Evaluating tasks"):
+        print(f"Evaluating task {task_id}...")
+
         task_data = evaluation_data.get_task(task_id)
-        actual_grid = task_data["test"][0]["output"]
+        actual_grid = task_data["test"][0]["output"] # BUG: There can be multiple test examples
         task_start_time = time.time()
         
         # Format initial prompt for model
         prompt = format_task_for_model(task_data)
+        print("Prompt length:", len(prompt))
+        print("Prompt:", prompt[:200]) # Print first 200 characters of the prompt for debugging
         
+        print("Running model with initial prompt...")
         # Try with initial prompt
         content, thinking_content = run_model_with_prompt(model, tokenizer, prompt)
+        print("Model output length:", len(content), "thinking content length:", len(thinking_content))
+        print("Model output:", content[:200]) # Print first 200 characters of the model output for debugging
+
+        print("Parsing model output...")
         predicted_grid = parse_model_output(content)
+        print("Parsed grid:", predicted_grid)
         retry_count = 0
         
         # Retry if needed and if we haven't reached max retries
         while predicted_grid is None and retry_count < args.max_retries:
             retry_count += 1
-            if args.verbose:
-                print(f"Retry {retry_count} for task {task_id} - previous output format incorrect")
+            # if args.verbose:
+            print(f"Retry {retry_count} for task {task_id} - previous output format incorrect")
             
             # Format retry prompt
             retry_prompt = format_retry_prompt(task_data, content)
@@ -285,6 +295,7 @@ def main():
                 print(f"  Could not parse model output: {content[:200]}...")
             print()
     
+    print("Length of task ids:", len(task_ids)) # debugging
     # Calculate overall metrics
     results["total"] = len(task_ids)
     results["accuracy"] = results["correct"] / results["total"] if results["total"] > 0 else 0
