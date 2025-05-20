@@ -16,6 +16,10 @@ module load Anaconda3/2024.06-1
 # Activate conda environment
 source activate lips_env
 
+# Display version of a specific package (replace package_name with actual package name)
+echo "Checking package version:"
+conda list transformers | grep transformers
+
 # Logging info
 echo "Starting job at $(date)"
 
