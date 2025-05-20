@@ -8,7 +8,7 @@ from tqdm import tqdm
 import torch
 
 # Import our modules
-from src.arc_data_loader import ARCDataLoader
+from arc_data_loader import ARCDataLoader
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 def format_task_for_model(task_data):
