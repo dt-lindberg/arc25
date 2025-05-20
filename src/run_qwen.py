@@ -1,6 +1,5 @@
 import os
 import json
-import time
 import numpy as np
 import argparse
 from datetime import datetime
@@ -214,15 +213,18 @@ def main():
             "max_retries": args.max_retries
         }
     }
+
+    print("Results storage initialized.")
+    print(results)
     
     # Step 4: Evaluate tasks
-    total_start_time = time.time()
+    total_start_time = datetime.now()
     for task_id in tqdm(task_ids, desc="Evaluating tasks"):
         print(f"Evaluating task {task_id}...")
 
         task_data = evaluation_data.get_task(task_id)
         actual_grid = task_data["test"][0]["output"] # BUG: There can be multiple test examples
-        task_start_time = time.time()
+        task_start_time = datetime.now()
         
         # Format initial prompt for model
         prompt = format_task_for_model(task_data)
@@ -272,7 +274,7 @@ def main():
             results["incorrect"] += 1
             status = "INCORRECT"
             
-        task_time = time.time() - task_start_time
+        task_time = datetime.now() - task_start_time
         
         # Store individual task results
         results["task_results"][task_id] = {
@@ -300,7 +302,7 @@ def main():
     results["total"] = len(task_ids)
     results["accuracy"] = results["correct"] / results["total"] if results["total"] > 0 else 0
     results["parse_error_rate"] = results["parse_errors"] / results["total"] if results["total"] > 0 else 0
-    results["total_time_seconds"] = time.time() - total_start_time
+    results["total_time_seconds"] = datetime.now() - total_start_time
     
     # Print summary
     print("\n" + "="*50)
