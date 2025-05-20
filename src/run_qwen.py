@@ -219,7 +219,7 @@ def main():
     
     # Step 4: Evaluate tasks
     total_start_time = datetime.now()
-    for task_id in tqdm(task_ids, desc="Evaluating tasks"):
+    for task_id in task_ids:
         print(f"Evaluating task {task_id}...")
 
         task_data = evaluation_data.get_task(task_id)
