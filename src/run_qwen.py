@@ -1,4 +1,5 @@
 import os
+import builtins
 import json
 import numpy as np
 import argparse
@@ -9,6 +10,14 @@ import torch
 # Import our modules
 from arc_data_loader import ARCDataLoader
 from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Force all print statements to flush immediately
+# For debugging on server
+original_print = builtins.print
+def flush_print(*args, **kwargs):
+    kwargs['flush'] = True
+    original_print(*args, **kwargs)
+builtins.print = flush_print
 
 def format_task_for_model(task_data):
     """Format an ARC task into a text prompt for the model."""
