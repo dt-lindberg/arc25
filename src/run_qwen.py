@@ -162,7 +162,7 @@ def main():
     # Set up argument parser
     parser = argparse.ArgumentParser(description="Evaluate Qwen3-4B on ARC tasks")
     parser.add_argument("--data-dir", type=str, 
-                        default="/home/dt-lindberg/arc25/src/ARC-AGI-2/data/evaluation",
+                        default="src/ARC-AGI-2/data/evaluation",
                         help="Directory containing evaluation data")
     parser.add_argument("--num-tasks", type=int, default=10,
                         help="Number of tasks to evaluate (default: 10)")

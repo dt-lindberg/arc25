@@ -13,17 +13,16 @@ module load 2024
 module load CUDA/12.6.0
 module load Anaconda3/2024.06-1
 
+# Set working directory
+cd $HOME/arc25
+
 # Activate conda environment
 source activate lips_env
-
-# Display version of a specific package (replace package_name with actual package name)
-echo "Checking package version:"
-conda list transformers | grep transformers
 
 # Logging info
 echo "Starting job at $(date)"
 
 # Run the python script
-srun python $HOME/arc25/src/load_model.py
+srun python src/run_qwen.py --num-tasks 5 --output-file qwen_evaluation_results.json --verbose
 
 echo "Finished job at $(date)"
