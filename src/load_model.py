@@ -1,9 +1,12 @@
 from datetime import datetime
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import transformers
 
 # Start timer
 start_time = datetime.now()
 print(start_time)
+
+print(transformers.__version__)
 
 model_name = "Qwen/Qwen3-4B"
 
