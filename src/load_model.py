@@ -4,9 +4,6 @@ import transformers
 
 # Start timer
 start_time = datetime.now()
-print(start_time)
-
-print(transformers.__version__)
 
 model_name = "Qwen/Qwen3-4B"
 
@@ -17,11 +14,20 @@ model = AutoModelForCausalLM.from_pretrained(
     torch_dtype="auto",
     device_map="auto"
 )
-
 print("Model loaded successfully.")
 
 # prepare the model input
-prompt = "Give me a short introduction to large language model."
+prompt = """You are tasked with solving an ARC-AGI reasoning challenge. CRITICALLY IMPORTANT: Your response must ONLY contain a list of matrices representing your solution.
+
+DO NOT include ANY explanations, reasoning, or text after you stop thinking.
+DO NOT describe your approach or explain your solution after you stop thinking.
+ONLY output the solution in the format [[a,b,c], [d,e,f], [g,h,i]] where the values represent your answer.
+
+For example, if your solution is a 3x3 grid, your entire response should look like:
+[[1,2,3],[4,5,6],[7,8,9]]
+
+NOTHING ELSE. No text before or after. ONLY the list of lists with your solution."""
+
 messages = [
     {"role": "user", "content": prompt}
 ]
