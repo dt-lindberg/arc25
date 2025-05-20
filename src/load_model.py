@@ -3,6 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # Start timer
 start_time = datetime.now()
+print(start_time)
 
 model_name = "Qwen/Qwen3-4B"
 
@@ -13,6 +14,8 @@ model = AutoModelForCausalLM.from_pretrained(
     torch_dtype="auto",
     device_map="auto"
 )
+
+print("Model loaded successfully.")
 
 # prepare the model input
 prompt = "Give me a short introduction to large language model."
